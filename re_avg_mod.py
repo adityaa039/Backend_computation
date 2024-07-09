@@ -17,8 +17,8 @@ data['Date'] = pd.to_datetime(data['Date'])
 data = data.sort_values(by=['ticker', 'Date'])
 
 # Restructure the DataFrame
-columns = ['Open', 'High', 'Low', 'Close', 'Volume', 'ind1', 'ind2', 'ind3', 'entry_signal', 'exit_signal', 'Date', 'ticker']
-field_names = ['Open', 'High', 'Low', 'Close', 'Volume', 'Ind1', 'Ind2', 'Ind3', 'Cond1', 'Cond2', 'Date', 'Stock']
+columns = ['Open', 'High', 'Low', 'close', 'Volume', 'ind1', 'ind2', 'ind3', 'entry_signal', 'exit_signal', 'Date', 'ticker', 'Adj_Close']
+field_names = ['Open', 'High', 'Low', 'close', 'Volume', 'Ind1', 'Ind2', 'Ind3', 'Cond1', 'Cond2', 'Date', 'Stock', 'Adj_Close']
 rows = []
 
 for _, row in data.iterrows():
@@ -28,7 +28,11 @@ for _, row in data.iterrows():
             # Convert date to string if it's a Timestamp
             if isinstance(field_value, pd.Timestamp):
                 field_value = field_value.strftime('%Y-%m-%d')
-            rows.append({'Field Name': field, 'Field Value': field_value, 'Closeness': '', 'Date': row['Date'].strftime('%Y-%m-%d'), 'Stock': row['ticker']})
+            # Determine closeness value for Close and Adj_Close
+            closeness_value = ''
+            if col == 'close' or col == 'Adj_Close':
+                closeness_value = field_value
+            rows.append({'Field Name': field, 'Field Value': field_value, 'Closeness': closeness_value, 'Date': row['Date'].strftime('%Y-%m-%d'), 'Stock': row['ticker']})
 
 # Create a new DataFrame from the rows
 restructured_data = pd.DataFrame(rows)
