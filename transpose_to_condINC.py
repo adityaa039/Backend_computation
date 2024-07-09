@@ -27,3 +27,4 @@ condition_rows = condition_rows[['Condition', 'Stock', 'Date']]
 
 # Print the resulting table
 print(condition_rows.to_string())
+#########################
