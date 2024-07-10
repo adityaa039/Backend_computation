@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 
 # Paths to the original and new SQLite database files
-original_db_path = 'C:\\Users\\Dhanika Dewan\\Documents\\VSCode\\Backend\\first50.sqlite'
+original_db_path = r'C:\Users\burma\OneDrive\Documents\GitHub\Backend_computation\first50.sqlite'
 new_db_path = 'output_with_indicators.sqlite'
 
 # Connect to the original SQLite database
@@ -21,7 +21,10 @@ ma_periods = [5, 10, 20]
 
 # Calculate moving averages and add them as new columns
 for i, period in enumerate(ma_periods, start=1):
-    data[f'ind{i}'] = data['Adj_Close'].rolling(window=period).mean()
+    data[f'ind{i}'] = data['close'].rolling(window=period).mean()
+
+# Calculate the standard deviation of 'close' with a window size of 90 days
+data['STD_DEV_90'] = data['close'].rolling(window=90).std()
 
 # Initialize columns for entry and exit signals
 data['entry_signal'] = False
@@ -36,6 +39,16 @@ exit_condition = (data['ind1'] < data['ind2']) & (data['ind1'].shift(1) >= data[
 # Apply the conditions to the DataFrame
 data.loc[entry_condition, 'entry_signal'] = True
 data.loc[exit_condition, 'exit_signal'] = True
+
+# Calculate Z-scores for each indicator and add them as new columns
+for i in range(1, 4):
+    indicator_name = f'ind{i}'
+    zscore_name = f'Z_SCORE_{indicator_name}'
+    data[zscore_name] = (data[indicator_name] - data[indicator_name].mean()) / data[indicator_name].std()
+
+# Reorder columns to place STD_DEV_90 beside close and Z-scores beside indicators
+column_order = ['id', 'Date', 'Open', 'high', 'low', 'close', 'STD_DEV_90', 'Adj_Close', 'Volume', 'ticker', 'ind1', 'Z_SCORE_ind1', 'ind2', 'Z_SCORE_ind2', 'ind3', 'Z_SCORE_ind3', 'entry_signal', 'exit_signal']
+data = data[column_order]
 
 # Connect to the new SQLite database
 conn_new = sqlite3.connect(new_db_path)

@@ -47,6 +47,6 @@ def view_and_store_first_50_rows(src_db_path, dest_db_path):
     dest_conn.close()
 
 # Specify the paths to your SQLite database files
-src_db_path = "C:\\Users\\Dhanika Dewan\\Documents\\GitHub\\StockBuddyGenAI\\src\\Data\\NSE_Yahoo_9_FEB_24.sqlite"
+src_db_path = "C:\\Users\\burma\\OneDrive\\Documents\\GitHub\\StockBuddyGenAI\\src\\Data\\NSE_Yahoo_9_FEB_24.sqlite"
 dest_db_path = "first50.sqlite"
 view_and_store_first_50_rows(src_db_path, dest_db_path)

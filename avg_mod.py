@@ -2,7 +2,7 @@ import sqlite3
 import pandas as pd
 
 # Paths to the original and new SQLite database files
-original_db_path = 'C:\\Users\\Dhanika Dewan\\Documents\\GitHub\\StockBuddyGenAI\\src\\Data\\NSE_Yahoo_9_FEB_24.sqlite'
+original_db_path = 'C:\\Users\\burma\\OneDrive\\Documents\\GitHub\\StockBuddyGenAI\\src\\Data\\NSE_Yahoo_9_FEB_24.sqlite'
 new_db_path = 'output.sqlite'
 
 # Connect to the original SQLite database
